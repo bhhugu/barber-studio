@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Barbero</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<section class="admin-panel">
+
+    <div class="top-admin">
+
+        <h1>PANEL DEL BARBERO</h1>
+
+        <a href="/logout">
+            <button class="logout-btn">
+                Cerrar Sesión
+            </button>
+        </a>
+
+    </div>
+
+    <!-- ESTADÍSTICAS -->
+
+    <div class="stats">
+
+        <div class="stat-card">
+            <h2>{{ total }}</h2>
+            <p>Total citas</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>{{ aceptadas }}</h2>
+            <p>Aceptadas</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>{{ pendientes }}</h2>
+            <p>Pendientes</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>{{ canceladas }}</h2>
+            <p>Canceladas</p>
+        </div>
+
+    </div>
+
+    <!-- SUBIR FOTO -->
+
+    <div class="subir-foto">
+
+        <h2>Subir corte a galería</h2>
+
+        <form action="/subir_foto" method="POST">
+
+            <input type="text" name="titulo" placeholder="Nombre del corte" required>
+
+            <input type="text" name="url" placeholder="URL de la imagen" required>
+
+            <button type="submit">
+                Subir
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- PRECIOS -->
+
+    <section class="panel-precios">
+
+        <h2>PRECIOS</h2>
+
+        <form action="/agregar_precio" method="POST">
+
+            <input
+                type="text"
+                name="servicio"
+                placeholder="Servicio"
+                required
+            >
+
+            <input
+                type="text"
+                name="precio"
+                placeholder="Precio"
+                required
+            >
+
+            <button type="submit">
+                Agregar
+            </button>
+
+        </form>
+
+        <div class="lista-precios">
+
+            {% for p in precios %}
+
+            <div class="precio-item">
+
+                <span>
+                    {{ p.servicio }} - ${{ p.precio }}
+                </span>
+
+                <a href="/eliminar_precio/{{ loop.index0 }}">
+                    <button>
+                        Eliminar
+                    </button>
+                </a>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+    <!-- CITAS -->
+
+    <div class="contenedor-citas">
+
+        {% for cita in citas %}
+
+        <div class="cita-card">
+
+            <h2>{{ cita.nombre }}</h2>
+
+            <p>
+                <strong>Teléfono:</strong>
+                {{ cita.telefono }}
+            </p>
+
+            <p>
+                <strong>Fecha:</strong>
+                {{ cita.fecha }}
+            </p>
+
+            <p>
+                <strong>Hora:</strong>
+                {{ cita.hora }}
+            </p>
+
+            <p>
+                <strong>Descripción:</strong>
+            </p>
+
+            <div class="descripcion">
+                {{ cita.descripcion }}
+            </div>
+
+            <div class="estado
+            {% if cita.estado == 'Aceptada' %}
+                aceptada
+            {% elif cita.estado == 'Cancelada' %}
+                cancelada
+            {% else %}
+                pendiente
+            {% endif %}
+            ">
+                {{ cita.estado }}
+            </div>
+
+            <div class="botones">
+
+                <a href="/aceptar/{{ loop.index0 }}">
+                    <button class="btn-aceptar">
+                        Aceptar
+                    </button>
+                </a>
+
+                <a href="/cancelar/{{ loop.index0 }}">
+                    <button class="btn-cancelar">
+                        Cancelar
+                    </button>
+                </a>
+
+                <a href="/eliminar/{{ loop.index0 }}">
+                    <button class="btn-eliminar">
+                        Eliminar
+                    </button>
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+</body>
+</html>

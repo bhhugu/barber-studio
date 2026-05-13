@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Admin</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<section class="login-section">
+
+    <form method="POST" class="login-form">
+
+        <h1>LOGIN BARBERO</h1>
+
+        <input type="text" name="usuario" placeholder="Usuario" required>
+
+        <input type="password" name="password" placeholder="Contraseña" required>
+
+        <button type="submit">
+            INGRESAR
+        </button>
+
+        <p class="error">
+            {{ error }}
+        </p>
+
+    </form>
+
+</section>
+
+</body>
+</html>

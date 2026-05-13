@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barber Studio</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>
+
+    <div class="logo">
+        BARBER STUDIO
+    </div>
+
+    <nav>
+        <a href="/">Inicio</a>
+        <a href="/citas">Reservar</a>
+        <a href="/mis_citas">Mis Citas</a>
+        <a href="/admin">Panel</a>
+    </nav>
+
+</header>
+
+<!-- HERO -->
+<section class="hero">
+
+    <div class="overlay"></div>
+
+    <div class="contenido">
+
+        <h1>EL ESTILO<br>COMIENZA AQUÍ</h1>
+
+        <p>Cortes premium, fades modernos y estilo profesional.</p>
+
+        <a href="/citas">
+            <button>AGENDAR CITA</button>
+        </a>
+
+    </div>
+
+</section>
+
+<!-- GALERÍA PREMIUM -->
+<section class="galeria">
+
+    <h2>GALERÍA DE CORTES</h2>
+
+    <div class="grid-galeria">
+
+        {% for img in galeria %}
+
+        <div class="item">
+            <img src="{{ img.url }}">
+            <div class="overlay-img">{{ img.titulo }}</div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<section class="precios">
+
+    <h2>PRECIOS</h2>
+
+    <div class="contenedor-precios">
+
+        {% for p in precios %}
+
+        <div class="precio-card">
+
+            <h3>{{ p.servicio }}</h3>
+
+            <p>${{ p.precio }}</p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<!-- UBICACIÓN -->
+
+<section class="ubicacion">
+
+    <h2>📍 NUESTRA UBICACIÓN</h2>
+
+    <p>
+        Barber Studio - San Juan Nepomuceno, Bolívar
+    </p>
+
+    <div class="mapa">
+
+        <iframe
+            src="https://www.google.com/maps?q=San+Juan+Nepomuceno+Bolivar&output=embed"
+            width="100%"
+            height="450"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy">
+        </iframe>
+
+    </div>
+
+</section>
+
+<!-- PAGOS -->
+
+<section class="pagos">
+
+    <h2>💳 PAGOS NEQUI</h2>
+
+    <p>
+        Escanea el código QR para realizar pagos o anticipos.
+    </p>
+
+    <div class="qr-container">
+
+        <img src="{{ url_for('static', filename='img/nequi.png') }}" alt="QR Nequi">
+
+    </div>
+
+</section>
+</body>
+</html>

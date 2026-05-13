@@ -1,0 +1,58 @@
+[
+    {
+        "nombre": "juan diego villa",
+        "telefono": "3204052024",
+        "fecha": "2026-06-07",
+        "hora": "15:30",
+        "descripcion": "cejas",
+        "estado": "Aceptada"
+    },
+    {
+        "nombre": "andres ",
+        "telefono": "3106630513",
+        "fecha": "2026-06-04",
+        "hora": "18:30",
+        "descripcion": "corte\r\n",
+        "estado": "Aceptada"
+    },
+    {
+        "nombre": "cristian ",
+        "telefono": "3106630513",
+        "fecha": "2026-06-04",
+        "hora": "03:15",
+        "descripcion": "combo",
+        "estado": "Aceptada"
+    },
+    {
+        "nombre": "carlos",
+        "telefono": "3204052024",
+        "fecha": "2026-06-04",
+        "hora": "15:01",
+        "descripcion": "cejas y pelo",
+        "estado": "Aceptada"
+    },
+    {
+        "nombre": "yuli",
+        "telefono": "3106630513",
+        "fecha": "2026-06-04",
+        "hora": "15:40",
+        "descripcion": "cejas",
+        "estado": "Aceptada"
+    },
+    {
+        "nombre": "Juan diego villa ",
+        "telefono": "3204052024",
+        "fecha": "2026-05-13",
+        "hora": "03:12",
+        "descripcion": "Peluca",
+        "estado": "Aceptada"
+    },
+    {
+        "nombre": "Juan diego villa ",
+        "telefono": "3204052024",
+        "fecha": "2026-05-06",
+        "hora": "14:18",
+        "descripcion": "7",
+        "estado": "Aceptada"
+    }
+]

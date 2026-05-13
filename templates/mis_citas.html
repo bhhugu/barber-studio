@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda Barbería</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>
+
+    <div class="logo">
+        BARBER STUDIO
+    </div>
+
+    <nav>
+        <a href="/">Inicio</a>
+        <a href="/citas">Reservar</a>
+        <a href="/mis_citas">Agenda</a>
+    </nav>
+
+</header>
+
+<section class="agenda-section">
+
+    <h1>📅 AGENDA DE CITAS</h1>
+
+    <p>
+        Consulta las horas ya reservadas antes de apartar tu cita.
+    </p>
+
+    <div class="agenda-grid">
+
+        {% for cita in citas %}
+
+        <div class="agenda-card">
+
+            <h2>{{ cita.hora_bonita }}</h2>
+            <p>
+                {{ cita.fecha_bonita }}
+            </p>
+
+            <p class="cliente-nombre">
+               Cliente: {{ cita.nombre }}
+            </p>
+
+            <div class="estado
+            {% if cita.estado == 'Aceptada' %}
+                aceptada
+            {% elif cita.estado == 'Cancelada' %}
+                cancelada
+            {% else %}
+                pendiente
+            {% endif %}
+            ">
+                {{ cita.estado }}
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+</body>
+</html>
