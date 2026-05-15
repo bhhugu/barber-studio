@@ -1,16 +1,16 @@
 from flask import Flask, render_template, request, redirect, session
-import sqlite3
+import psycopg2
+import psycopg2.extras
 import os
 from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = "barberia_secret"
 
-DATABASE = "barberia.db"
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 def conectar():
-    conn = sqlite3.connect(DATABASE)
-    conn.row_factory = sqlite3.Row
+    conn = psycopg2.connect(DATABASE_URL)
     return conn
 
 def crear_tablas():
@@ -19,7 +19,7 @@ def crear_tablas():
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS citas (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id SERIAL PRIMARY KEY,
         nombre TEXT,
         telefono TEXT,
         fecha TEXT,
@@ -31,7 +31,7 @@ def crear_tablas():
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS galeria (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id SERIAL PRIMARY KEY,
         titulo TEXT,
         url TEXT
     )
@@ -39,7 +39,7 @@ def crear_tablas():
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS precios (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id SERIAL PRIMARY KEY,
         servicio TEXT,
         precio TEXT
     )
@@ -57,7 +57,7 @@ PASSWORD_ADMIN = "1234"
 @app.route("/")
 def inicio():
     conn = conectar()
-    cursor = conn.cursor()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     cursor.execute("SELECT * FROM galeria")
     galeria = cursor.fetchall()
     cursor.execute("SELECT * FROM precios")
@@ -77,7 +77,7 @@ def guardar_cita():
     cursor = conn.cursor()
     cursor.execute("""
     INSERT INTO citas (nombre, telefono, fecha, hora, descripcion, estado)
-    VALUES (?, ?, ?, ?, ?, ?)
+    VALUES (%s, %s, %s, %s, %s, %s)
     """, (
         request.form["nombre"],
         request.form["telefono"],
@@ -118,7 +118,7 @@ def admin():
         return redirect("/login")
 
     conn = conectar()
-    cursor = conn.cursor()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     cursor.execute("SELECT * FROM citas")
     citas = cursor.fetchall()
     cursor.execute("SELECT * FROM galeria")
@@ -147,7 +147,7 @@ def admin():
 @app.route("/mis_citas")
 def mis_citas():
     conn = conectar()
-    cursor = conn.cursor()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     cursor.execute("SELECT * FROM citas")
     citas = cursor.fetchall()
     conn.close()
@@ -182,7 +182,7 @@ def mis_citas():
 def aceptar(i):
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("UPDATE citas SET estado = ? WHERE id = ?", ("Aceptada", i))
+    cursor.execute("UPDATE citas SET estado = %s WHERE id = %s", ("Aceptada", i))
     conn.commit()
     conn.close()
     return redirect("/admin")
@@ -191,7 +191,7 @@ def aceptar(i):
 def cancelar(i):
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("UPDATE citas SET estado = ? WHERE id = ?", ("Cancelada", i))
+    cursor.execute("UPDATE citas SET estado = %s WHERE id = %s", ("Cancelada", i))
     conn.commit()
     conn.close()
     return redirect("/admin")
@@ -200,7 +200,7 @@ def cancelar(i):
 def eliminar(i):
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM citas WHERE id = ?", (i,))
+    cursor.execute("DELETE FROM citas WHERE id = %s", (i,))
     conn.commit()
     conn.close()
     return redirect("/admin")
@@ -210,7 +210,7 @@ def eliminar(i):
 def subir_foto():
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO galeria (titulo, url) VALUES (?, ?)", (
+    cursor.execute("INSERT INTO galeria (titulo, url) VALUES (%s, %s)", (
         request.form["titulo"],
         request.form["url"]
     ))
@@ -223,7 +223,7 @@ def subir_foto():
 def agregar_precio():
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO precios (servicio, precio) VALUES (?, ?)", (
+    cursor.execute("INSERT INTO precios (servicio, precio) VALUES (%s, %s)", (
         request.form["servicio"],
         request.form["precio"]
     ))
@@ -236,7 +236,7 @@ def agregar_precio():
 def eliminar_precio(i):
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM precios WHERE id = ?", (i,))
+    cursor.execute("DELETE FROM precios WHERE id = %s", (i,))
     conn.commit()
     conn.close()
     return redirect("/admin")
